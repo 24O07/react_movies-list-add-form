@@ -1,4 +1,3 @@
-
 import './App.scss';
 import { MoviesList } from './components/MoviesList';
 import { NewMovie } from './components/NewMovie';
@@ -10,6 +9,7 @@ export const App = () => {
   const handleAddMovie = (movie: Movie) => {
     setMovies(prevMovies => [...prevMovies, movie]);
   };
+
   return (
     <div className="page">
       <div className="page-content">

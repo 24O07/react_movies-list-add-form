@@ -1,39 +1,53 @@
 import { useState } from 'react';
 import { TextField } from '../TextField';
 
-export const NewMovie = ({ onAdd }) => {
+// Типізація пропсів компонента
+interface NewMovieProps {
+  onAdd: (movie: {
+    title: string;
+    description: string;
+    imgUrl: string;
+    imdbUrl: string;
+    imdbId: string;
+  }) => void;
+}
+
+export const NewMovie: React.FC<NewMovieProps> = ({ onAdd }) => {
   const [form, setForm] = useState({
-    title: "",
-    description: "",
-    imgUrl: "",
-    imdbUrl: "",
-    imdbId: "",
+    title: '',
+    description: '',
+    imgUrl: '',
+    imdbUrl: '',
+    imdbId: '',
   });
 
   const [count, setCount] = useState(0); // для скидання touched у TextField
 
-  // Чи всі обов’язкові поля заповнені
+  // Перевірка, чи всі обов'язкові поля заповнені
   const isFormValid =
-    form.title.trim() !== "" &&
-    form.imgUrl.trim() !== "" &&
-    form.imdbUrl.trim() !== "";
+    form.title.trim() !== '' &&
+    form.imgUrl.trim() !== '' &&
+    form.imdbUrl.trim() !== '' &&
+    form.imdbId.trim() !== '';
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
     if (!isFormValid) return;
 
-    onAdd(form); // передаємо новий фільм у App
+    // Додаємо новий фільм
+    onAdd(form);
 
-    // очищаємо форму
+    // Очищаємо форму
     setForm({
-      title: "",
-      description: "",
-      imgUrl: "",
-      imdbUrl: "",
-      imdbId: "",
+      title: '',
+      description: '',
+      imgUrl: '',
+      imdbUrl: '',
+      imdbId: '',
     });
 
-    // збільшуємо count для скидання touched
+    // Змінюємо count, щоб TextField скинув touched
     setCount(prev => prev + 1);
   };
 
@@ -45,7 +59,7 @@ export const NewMovie = ({ onAdd }) => {
         name="title"
         label="Title"
         value={form.title}
-        onChange={(value) => setForm({ ...form, title: value })}
+        onChange={value => setForm({ ...form, title: value })}
         required
       />
 
@@ -53,14 +67,14 @@ export const NewMovie = ({ onAdd }) => {
         name="description"
         label="Description"
         value={form.description}
-        onChange={(value) => setForm({ ...form, description: value })}
+        onChange={value => setForm({ ...form, description: value })}
       />
 
       <TextField
         name="imgUrl"
         label="Image URL"
         value={form.imgUrl}
-        onChange={(value) => setForm({ ...form, imgUrl: value })}
+        onChange={value => setForm({ ...form, imgUrl: value })}
         required
       />
 
@@ -68,7 +82,7 @@ export const NewMovie = ({ onAdd }) => {
         name="imdbUrl"
         label="IMDB URL"
         value={form.imdbUrl}
-        onChange={(value) => setForm({ ...form, imdbUrl: value })}
+        onChange={value => setForm({ ...form, imdbUrl: value })}
         required
       />
 
@@ -76,7 +90,8 @@ export const NewMovie = ({ onAdd }) => {
         name="imdbId"
         label="IMDB ID"
         value={form.imdbId}
-        onChange={(value) => setForm({ ...form, imdbId: value })}
+        onChange={value => setForm({ ...form, imdbId: value })}
+        required
       />
 
       <div className="field is-grouped">
@@ -85,7 +100,7 @@ export const NewMovie = ({ onAdd }) => {
             type="submit"
             data-cy="submit-button"
             className="button is-link"
-            disabled={!isFormValid} // кнопка блокується поки не заповнені обов’язкові поля
+            disabled={!isFormValid}
           >
             Add
           </button>
